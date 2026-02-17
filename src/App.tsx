@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Rocket, 
-  Users, 
   Globe, 
-  Zap, 
+  Map, 
+  Database, 
   Github, 
   Twitter, 
   Mail, 
   ArrowRight, 
-  ChevronRight,
   Menu,
   X,
   Star,
-  Shield
+  Layers
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -26,40 +25,35 @@ const SpaceGen = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const NavItem = ({ href, children }: { href: string; children: React.ReactNode }) => (
-    <a 
-      href={href} 
-      className="text-gray-300 hover:text-blue-400 transition-colors duration-200 font-medium text-sm"
-    >
-      {children}
-    </a>
-  );
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-white selection:bg-blue-500/30 selection:text-blue-200">
-      {/* Background Starfield Overlay */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent opacity-50"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-      </div>
-
+    <div className="min-h-screen bg-[#020617] text-white selection:bg-blue-500/30">
       {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-md border-b border-white/10 py-3' : 'bg-transparent py-5'}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-md border-b border-white/10 py-3' : 'bg-transparent py-5'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          <div className="flex items-center gap-2 group">
-            <div className="bg-blue-600 p-1.5 rounded-lg group-hover:rotate-12 transition-transform duration-300">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
+            <div className="bg-blue-600 p-1.5 rounded-lg">
               <Rocket className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold tracking-tight">SpaceGen</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
-            <NavItem href="#missions">Missions</NavItem>
-            <NavItem href="#projects">Projects</NavItem>
-            <NavItem href="#community">Community</NavItem>
-            <NavItem href="#about">About</NavItem>
-            <button className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200 shadow-[0_0_15px_rgba(37,99,235,0.4)]">
-              Join Mission
+            <button onClick={() => scrollToSection('mission')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Mission</button>
+            <button onClick={() => scrollToSection('maps')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Planetary Maps</button>
+            <button onClick={() => scrollToSection('data')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Open Data</button>
+            <button 
+              onClick={() => window.open('https://github.com/space-gen', '_blank')}
+              className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all"
+            >
+              Join the Org
             </button>
           </div>
 
@@ -75,15 +69,17 @@ const SpaceGen = () => {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-black/95 backdrop-blur-xl border-b border-white/10 overflow-hidden"
+              className="md:hidden bg-black/95 border-b border-white/10"
             >
-              <div className="flex flex-col gap-6 p-8 items-center text-center">
-                <NavItem href="#missions">Missions</NavItem>
-                <NavItem href="#projects">Projects</NavItem>
-                <NavItem href="#community">Community</NavItem>
-                <NavItem href="#about">About</NavItem>
-                <button className="w-full bg-blue-600 hover:bg-blue-500 text-white px-5 py-3 rounded-xl font-semibold transition-all duration-200">
-                  Join Mission
+              <div className="flex flex-col gap-6 p-8">
+                <button onClick={() => scrollToSection('mission')} className="text-gray-300 text-left">Mission</button>
+                <button onClick={() => scrollToSection('maps')} className="text-gray-300 text-left">Planetary Maps</button>
+                <button onClick={() => scrollToSection('data')} className="text-gray-300 text-left">Open Data</button>
+                <button 
+                  onClick={() => window.open('https://github.com/space-gen', '_blank')}
+                  className="w-full bg-blue-600 text-white px-5 py-3 rounded-xl font-semibold"
+                >
+                  Join the Org
                 </button>
               </div>
             </motion.div>
@@ -92,197 +88,123 @@ const SpaceGen = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden px-6">
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full text-blue-400 text-xs font-bold uppercase tracking-widest mb-8">
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1 rounded-full text-blue-400 text-xs font-bold uppercase tracking-widest mb-8">
               <Star className="w-3 h-3" />
-              <span>Next Generation Exploration</span>
+              <span>Founded by Soumyadip Karforma</span>
             </div>
-            <h1 className="text-5xl md:text-8xl font-black tracking-tight leading-[1.1] mb-8 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
-              Democratizing the <br /> Final Frontier
+            <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8">
+              Mapping the Solar System <br /> with <span className="text-blue-500">Open Data</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 leading-relaxed mb-8">
-              SpaceGen is a community-driven initiative founded and led by **Soumyadip Karforma**, dedicated to making space exploration accessible to everyone through open research and decentralized innovation.
+            <p className="max-w-2xl mx-auto text-lg text-gray-400 mb-12">
+              SpaceGen is a new community-driven initiative dedicated to building highly detailed, open-source planetary maps using public space agency data.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="group w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-200 shadow-xl shadow-blue-900/20">
-                Launch Dashboard
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <button 
+                onClick={() => scrollToSection('maps')}
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all"
+              >
+                View Maps
+                <ArrowRight className="w-5 h-5" />
               </button>
-              <button className="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold transition-all duration-200">
-                Read Whitepaper
+              <button 
+                onClick={() => scrollToSection('data')}
+                className="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold transition-all"
+              >
+                Explore Data Sources
               </button>
             </div>
           </motion.div>
         </div>
-
-        {/* Animated Orbits */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-blue-500/5 rounded-full pointer-events-none"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] border border-blue-500/5 rounded-full pointer-events-none"></div>
       </section>
 
-      {/* Features/Stats Section */}
-      <section className="py-20 px-6 border-y border-white/5 bg-black/20">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-          {[
-            { icon: Users, title: "Visionary Leadership", desc: "Founded and led by Soumyadip Karforma, driving the future of decentralized space exploration." },
-            { icon: Globe, title: "Open Satellite Network", desc: "Access real-time orbital data through our decentralized ground station network." },
-            { icon: Shield, title: "Space Governance", desc: "Participate in shaping the future of space policy and ethics through community voting." }
-          ].map((item, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="flex flex-col items-center md:items-start text-center md:text-left gap-4"
-            >
-              <div className="p-3 bg-blue-600/10 rounded-2xl border border-blue-500/20">
-                <item.icon className="w-6 h-6 text-blue-500" />
-              </div>
-              <h3 className="text-xl font-bold">{item.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
-            </motion.div>
-          ))}
+      {/* Mission Section */}
+      <section id="mission" className="py-24 px-6 bg-black/20">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-4xl font-bold mb-6">Our Mission</h2>
+            <p className="text-gray-400 leading-relaxed mb-6">
+              SpaceGen was founded to bridge the gap between complex orbital data and visual planetary exploration. We believe that the secrets of our solar system should be accessible to everyone in a high-resolution, interactive format.
+            </p>
+            <div className="space-y-4">
+              {[
+                "Processing petabytes of raw NASA/ESA data",
+                "Building open-source mapping pipelines",
+                "Fostering a global community of contributors"
+              ].map((text, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <div className="bg-blue-600/20 p-1 rounded-full">
+                    <Star className="w-4 h-4 text-blue-500" />
+                  </div>
+                  <span className="text-sm font-medium">{text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-gradient-to-br from-blue-600/20 to-purple-600/20 border border-white/10 rounded-3xl p-8 aspect-square flex items-center justify-center relative overflow-hidden">
+             <Globe className="w-48 h-48 text-blue-500 opacity-50 absolute animate-pulse" />
+             <Map className="w-32 h-32 text-white relative z-10" />
+          </div>
         </div>
       </section>
 
-      {/* Initiatives Section */}
-      <section id="projects" className="py-32 px-6">
+      {/* Planetary Maps Section */}
+      <section id="maps" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-4xl font-bold mb-4">Active Initiatives</h2>
-              <p className="text-gray-400">Join a working group and start contributing to real-world space projects today.</p>
-            </div>
-            <button className="flex items-center gap-2 text-blue-400 font-bold hover:text-blue-300 transition-colors">
-              View All Projects <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h2 className="text-4xl font-bold mb-12 text-center">Planetary Map Gallery</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { 
-                tag: "Hardware", 
-                title: "NanoSat-1", 
-                desc: "Developing an open-source cube-sat architecture for affordable orbital experiments.",
-                color: "bg-purple-500" 
-              },
-              { 
-                tag: "Data", 
-                title: "StarLight API", 
-                desc: "A unified API for cross-referencing public space telescope and telemetry data.",
-                color: "bg-blue-500" 
-              },
-              { 
-                tag: "Policy", 
-                title: "Orbital Ethics", 
-                desc: "A framework for sustainable satellite deployment and debris management.",
-                color: "bg-emerald-500" 
-              }
-            ].map((proj, i) => (
-              <motion.div 
-                key={i}
-                whileHover={{ y: -10 }}
-                className="bg-white/5 border border-white/10 rounded-3xl p-8 hover:bg-white/10 transition-all duration-300 group"
-              >
-                <div className={`${proj.color} w-fit px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tighter mb-6`}>
-                  {proj.tag}
+              { title: "Mars Terrain", type: "Topographic", status: "In Progress" },
+              { title: "Lunar North Pole", type: "High-Res Imagery", status: "Beta" },
+              { title: "Europa Ice Sheets", type: "Multi-Spectral", status: "Planned" }
+            ].map((map, i) => (
+              <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-blue-500/50 transition-colors">
+                <div className="bg-blue-600 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                  <Layers className="w-6 h-6" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 group-hover:text-blue-400 transition-colors">{proj.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed mb-8">{proj.desc}</p>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex -space-x-2">
-                    {[1,2,3].map(n => (
-                      <div key={n} className="w-8 h-8 rounded-full border-2 border-[#020617] bg-gray-700"></div>
-                    ))}
-                    <div className="w-8 h-8 rounded-full border-2 border-[#020617] bg-blue-600 flex items-center justify-center text-[10px] font-bold">+12</div>
-                  </div>
-                  <button className="text-gray-400 group-hover:text-white transition-colors">
-                    <Zap className="w-5 h-5" />
-                  </button>
-                </div>
-              </motion.div>
+                <h3 className="text-xl font-bold mb-2">{map.title}</h3>
+                <p className="text-gray-500 text-sm mb-4">{map.type}</p>
+                <span className="text-xs font-bold uppercase tracking-wider text-blue-400 bg-blue-400/10 px-2 py-1 rounded">{map.status}</span>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Community Section */}
-      <section id="community" className="py-20 px-6">
-        <div className="max-w-5xl mx-auto bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/20 rounded-full -ml-32 -mb-32 blur-3xl"></div>
-          
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-5xl font-black mb-8">Ready to explore?</h2>
-            <p className="text-blue-100 text-lg md:text-xl mb-12 max-w-2xl mx-auto">
-              Our community is open to everyone. Whether you're an orbital dynamicist or a curious student, there's a place for you in SpaceGen.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition-transform flex items-center gap-2">
-                Join our Discord
-              </button>
-              <button className="bg-transparent border-2 border-white/30 text-white px-8 py-4 rounded-2xl font-bold hover:bg-white/10 transition-all">
-                Contributor Guide
-              </button>
-            </div>
-          </div>
+      {/* Data Section */}
+      <section id="data" className="py-24 px-6 bg-blue-600">
+        <div className="max-w-4xl mx-auto text-center">
+          <Database className="w-16 h-16 mx-auto mb-8 text-white" />
+          <h2 className="text-4xl font-bold mb-6">Open Data First</h2>
+          <p className="text-blue-100 text-xl mb-10">
+            Everything we build is based on open-source datasets. We are currently integrating data from the PDS (Planetary Data System) to create the next generation of maps.
+          </p>
+          <button 
+            onClick={() => window.open('https://pds.nasa.gov/', '_blank')}
+            className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition-transform"
+          >
+            Browse Data Sources
+          </button>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="py-20 px-6 border-t border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
-          <div className="max-w-xs">
-            <div className="flex items-center gap-2 mb-6">
-              <Rocket className="w-6 h-6 text-blue-500" />
-              <span className="text-2xl font-bold">SpaceGen</span>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed mb-8">
-              Decentralizing space exploration through community collaboration and open-source innovation.
-            </p>
-            <div className="flex gap-4">
-              <Twitter className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
-              <Github className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
-              <Mail className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer" />
-            </div>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-2">
+            <Rocket className="w-6 h-6 text-blue-500" />
+            <span className="text-2xl font-bold">SpaceGen</span>
           </div>
-          
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-12 md:gap-24">
-            <div>
-              <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Org</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li className="hover:text-white cursor-pointer transition-colors">About Us</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Manifesto</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Whitepaper</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Resources</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li className="hover:text-white cursor-pointer transition-colors">Satellite API</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Ground Stations</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Data Portal</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-6 text-sm uppercase tracking-widest text-gray-500">Contact</h4>
-              <ul className="space-y-4 text-sm text-gray-400">
-                <li className="hover:text-white cursor-pointer transition-colors">Twitter</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Discord</li>
-                <li className="hover:text-white cursor-pointer transition-colors">Email</li>
-              </ul>
-            </div>
+          <p className="text-gray-500 text-sm">
+            © {new Date().getFullYear()} Founded by Soumyadip Karforma. SpaceGen Org.
+          </p>
+          <div className="flex gap-6">
+            <button onClick={() => window.open('https://github.com/space-gen', '_blank')} className="text-gray-400 hover:text-white"><Github /></button>
+            <button className="text-gray-400 hover:text-white"><Twitter /></button>
+            <button className="text-gray-400 hover:text-white"><Mail /></button>
           </div>
-        </div>
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-center text-xs text-gray-500">
-          © {new Date().getFullYear()} SpaceGen Foundation. Open sourced under MIT License.
         </div>
       </footer>
     </div>
