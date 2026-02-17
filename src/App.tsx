@@ -106,8 +106,8 @@ const SpaceGen = () => {
             <h1 className="text-5xl md:text-8xl font-black tracking-tight leading-[1.1] mb-8 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
               Democratizing the <br /> Final Frontier
             </h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 leading-relaxed mb-12">
-              SpaceGen is a community-driven initiative dedicated to making space exploration accessible to everyone through open research, satellite data, and decentralized innovation.
+            <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-400 leading-relaxed mb-8">
+              SpaceGen is a community-driven initiative founded and led by **Soumyadip Karforma**, dedicated to making space exploration accessible to everyone through open research and decentralized innovation.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button className="group w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all duration-200 shadow-xl shadow-blue-900/20">
@@ -130,7 +130,7 @@ const SpaceGen = () => {
       <section className="py-20 px-6 border-y border-white/5 bg-black/20">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
           {[
-            { icon: Users, title: "12k+ Members", desc: "A global community of scientists, engineers, and enthusiasts collaborating daily." },
+            { icon: Users, title: "Visionary Leadership", desc: "Founded and led by Soumyadip Karforma, driving the future of decentralized space exploration." },
             { icon: Globe, title: "Open Satellite Network", desc: "Access real-time orbital data through our decentralized ground station network." },
             { icon: Shield, title: "Space Governance", desc: "Participate in shaping the future of space policy and ethics through community voting." }
           ].map((item, i) => (
