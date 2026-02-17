@@ -11,7 +11,10 @@ import {
   Menu,
   X,
   Star,
-  Layers
+  Layers,
+  Instagram,
+  Youtube,
+  Coffee
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -48,7 +51,7 @@ const SpaceGen = () => {
           <div className="hidden md:flex items-center gap-8">
             <button onClick={() => scrollToSection('mission')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Mission</button>
             <button onClick={() => scrollToSection('maps')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Planetary Maps</button>
-            <button onClick={() => scrollToSection('data')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">Open Data</button>
+            <button onClick={() => scrollToSection('founder')} className="text-gray-300 hover:text-white text-sm font-medium transition-colors">About Founder</button>
             <button 
               onClick={() => window.open('https://github.com/space-gen', '_blank')}
               className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-full text-sm font-semibold transition-all"
@@ -74,7 +77,7 @@ const SpaceGen = () => {
               <div className="flex flex-col gap-6 p-8">
                 <button onClick={() => scrollToSection('mission')} className="text-gray-300 text-left">Mission</button>
                 <button onClick={() => scrollToSection('maps')} className="text-gray-300 text-left">Planetary Maps</button>
-                <button onClick={() => scrollToSection('data')} className="text-gray-300 text-left">Open Data</button>
+                <button onClick={() => scrollToSection('founder')} className="text-gray-300 text-left">About Founder</button>
                 <button 
                   onClick={() => window.open('https://github.com/space-gen', '_blank')}
                   className="w-full bg-blue-600 text-white px-5 py-3 rounded-xl font-semibold"
@@ -88,18 +91,18 @@ const SpaceGen = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6">
+      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
             <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1 rounded-full text-blue-400 text-xs font-bold uppercase tracking-widest mb-8">
               <Star className="w-3 h-3" />
-              <span>Founded by Soumyadip Karforma</span>
+              <span>Project by Soumyadip Karforma</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8">
               Mapping the Solar System <br /> with <span className="text-blue-500">Open Data</span>
             </h1>
             <p className="max-w-2xl mx-auto text-lg text-gray-400 mb-12">
-              SpaceGen is a new community-driven initiative dedicated to building highly detailed, open-source planetary maps using public space agency data.
+              SpaceGen is a community-driven initiative dedicated to building highly detailed, open-source planetary maps using public space agency data.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button 
@@ -110,10 +113,10 @@ const SpaceGen = () => {
                 <ArrowRight className="w-5 h-5" />
               </button>
               <button 
-                onClick={() => scrollToSection('data')}
+                onClick={() => scrollToSection('founder')}
                 className="w-full sm:w-auto bg-white/5 hover:bg-white/10 border border-white/10 text-white px-8 py-4 rounded-2xl font-bold transition-all"
               >
-                Explore Data Sources
+                Meet the Founder
               </button>
             </div>
           </motion.div>
@@ -173,20 +176,59 @@ const SpaceGen = () => {
         </div>
       </section>
 
-      {/* Data Section */}
-      <section id="data" className="py-24 px-6 bg-blue-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <Database className="w-16 h-16 mx-auto mb-8 text-white" />
-          <h2 className="text-4xl font-bold mb-6">Open Data First</h2>
-          <p className="text-blue-100 text-xl mb-10">
-            Everything we build is based on open-source datasets. We are currently integrating data from the PDS (Planetary Data System) to create the next generation of maps.
-          </p>
-          <button 
-            onClick={() => window.open('https://pds.nasa.gov/', '_blank')}
-            className="bg-white text-blue-600 px-8 py-4 rounded-2xl font-bold hover:scale-105 transition-transform"
-          >
-            Browse Data Sources
-          </button>
+      {/* Founder Section */}
+      <section id="founder" className="py-24 px-6 bg-black/20">
+        <div className="max-w-7xl mx-auto">
+          <div className="bg-gradient-to-br from-blue-900/40 to-black border border-white/10 rounded-[3rem] p-12 md:p-20">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-4xl font-bold mb-6">About the Founder</h2>
+                <h3 className="text-2xl font-bold text-blue-400 mb-4">Soumyadip Karforma</h3>
+                <p className="text-gray-300 text-lg leading-relaxed mb-8">
+                  I am currently working with AI agents and full stack web development along with Linux and databases. SpaceGen is my vision to democratize planetary data through technology.
+                </p>
+                
+                <div className="flex flex-wrap gap-4 mb-10">
+                  <button onClick={() => window.open('https://instagram.com/soumyadip_karforma', '_blank')} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 text-gray-400 hover:text-white"><Instagram /></button>
+                  <button onClick={() => window.open('https://x.com/soumyadip_k', '_blank')} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 text-gray-400 hover:text-white"><Twitter /></button>
+                  <button onClick={() => window.open('https://youtube.com/@soumyadip_karforma', '_blank')} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 text-gray-400 hover:text-white"><Youtube /></button>
+                  <button onClick={() => window.open('mailto:soumyadipkarforma@gmail.com', '_blank')} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 text-gray-400 hover:text-white"><Mail /></button>
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <button 
+                    onClick={() => window.open('https://buymeacoffee.com/soumyadipkarforma', '_blank')}
+                    className="flex items-center gap-2 bg-yellow-500 text-black px-6 py-3 rounded-xl font-bold hover:scale-105 transition-transform"
+                  >
+                    <Coffee className="w-5 h-5" /> Buy Me a Coffee
+                  </button>
+                  <button 
+                    onClick={() => window.open('https://github.com/soumyadipkarforma', '_blank')}
+                    className="flex items-center gap-2 bg-white/10 text-white px-6 py-3 rounded-xl font-bold hover:bg-white/20 transition-all border border-white/10"
+                  >
+                    <Github className="w-5 h-5" /> GitHub Profile
+                  </button>
+                </div>
+              </div>
+              <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-3xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative bg-black rounded-3xl overflow-hidden aspect-video flex flex-col items-center justify-center p-8 border border-white/10">
+                  <img 
+                    src="https://github-readme-stats.vercel.app/api?username=soumyadipkarforma&theme=dark&hide_border=true&bg_color=00000000" 
+                    alt="GitHub Stats" 
+                    className="w-full h-auto mb-4"
+                  />
+                  <div className="flex gap-2">
+                    {["React", "TS", "Python", "Linux", "AI"].map((skill) => (
+                      <span key={skill} className="px-3 py-1 bg-blue-600/20 text-blue-400 text-xs font-bold rounded-full border border-blue-500/20">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -198,12 +240,12 @@ const SpaceGen = () => {
             <span className="text-2xl font-bold">SpaceGen</span>
           </div>
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Founded by Soumyadip Karforma. SpaceGen Org.
+            © {new Date().getFullYear()} Founded by Soumyadip Karforma.
           </p>
           <div className="flex gap-6">
             <button onClick={() => window.open('https://github.com/space-gen', '_blank')} className="text-gray-400 hover:text-white"><Github /></button>
-            <button className="text-gray-400 hover:text-white"><Twitter /></button>
-            <button className="text-gray-400 hover:text-white"><Mail /></button>
+            <button onClick={() => window.open('https://x.com/soumyadip_k', '_blank')} className="text-gray-400 hover:text-white"><Twitter /></button>
+            <button onClick={() => window.open('mailto:soumyadipkarforma@gmail.com', '_blank')} className="text-gray-400 hover:text-white"><Mail /></button>
           </div>
         </div>
       </footer>
